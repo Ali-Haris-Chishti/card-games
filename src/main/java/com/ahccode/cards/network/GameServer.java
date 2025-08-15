@@ -4,6 +4,7 @@ import com.ahccode.cards.card.Card;
 import com.ahccode.cards.card.CardFamily;
 import com.ahccode.cards.card.CardNumber;
 import com.ahccode.cards.card.game.*;
+import com.ahccode.cards.card.game.context.GameContextCore;
 import com.ahccode.cards.card.game.daketi.Daketi;
 import com.ahccode.cards.card.game.thulla.Thulla;
 import com.ahccode.cards.network.message.CardMessage;
@@ -106,6 +107,7 @@ public class GameServer {
             isRunning = true;
             log.info("Server started on port {}", port);
             logMessageOnLogArea("INFO", String.format("Server started on port %d", port));
+            GameContextCore.GAME_FINISHED = true;
 
             while (isRunning && !serverSocket.isClosed()) {
                 try {
@@ -519,6 +521,7 @@ public class GameServer {
 
         log.info("Game finished - starting cleanup process");
         logMessageOnLogArea("GAME-END", "Game finished - starting cleanup");
+        GameContextCore.GAME_FINISHED = true;
 
         synchronized (gameLock) {
             try {

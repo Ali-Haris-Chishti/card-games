@@ -2,6 +2,7 @@ package com.ahccode.cards.network;
 
 import com.ahccode.cards.ClientMainFX;
 import com.ahccode.cards.card.game.PlayerInfo;
+import com.ahccode.cards.card.game.context.GameContextCore;
 import com.ahccode.cards.card.game.daketi.DaketiController;
 import com.ahccode.cards.network.message.CardMessage;
 import com.ahccode.cards.network.message.Message;
@@ -104,8 +105,15 @@ public class GameClient {
                                 break;
 
                             case SERVER_SHUTDOWN:
-                                log.info("Received SERVER_SHUTDOWN for player {}", myPlayerNumber);
-                                Platform.runLater(() -> ClientMainFX.restartGame(true));
+                                log.info("Received SERVER_SHUTDOWN for player {}, {}", myPlayerNumber, GameContextCore.GAME_FINISHED);
+                                if (!GameContextCore.GAME_FINISHED)
+                                    Platform.runLater(() -> ClientMainFX.restartGame(true));
+                                break;
+
+                            case GAME_FINISHED:
+                                GameContextCore.GAME_FINISHED = true;
+                                log.info("Processing GAME_FINISHED for player {}", myPlayerNumber);
+                                break;
 
                             default:
                                 log.info("Unknown message type: {}", msg.getType());
@@ -113,19 +121,21 @@ public class GameClient {
                         }
 
                     } catch (ClassNotFoundException e) {
-                        System.err.println("Error deserializing message: " + e.getMessage());
-                        e.printStackTrace();
+                        log.error("Error deserializing message: {}", e.getMessage());
+                        log.error("error: {}", e.getCause().toString());
                         break;
                     } catch (IOException e) {
                         if (connected) {
-                            System.err.println("IO Error reading from server: " + e.getMessage());
-                            e.printStackTrace();
+                            log.error("IO Error reading from server: {}", e.getMessage());
+                            log.error("error: {}", e.getCause().toString());
                         }
-                        Platform.runLater(() -> ClientMainFX.restartGame(true));
+                        if (!GameContextCore.GAME_FINISHED)
+                            Platform.runLater(() -> ClientMainFX.restartGame(true));
                         break;
                     } catch (Exception e) {
-                        e.printStackTrace();
-                        Platform.runLater(() -> ClientMainFX.restartGame(true));
+                        log.error("error: {}", e.getCause().toString());
+                        if (!GameContextCore.GAME_FINISHED)
+                            Platform.runLater(() -> ClientMainFX.restartGame(true));
                         break;
                     }
                 }

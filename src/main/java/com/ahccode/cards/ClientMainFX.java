@@ -31,6 +31,7 @@ import javafx.util.Duration;
 
 import javafx.scene.control.*;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import static com.ahccode.cards.ui.daketi.DaketiGameFinishedScreen.GameResult.*;
 
+@Slf4j
 public class ClientMainFX extends Application {
 
     public static void main(String[] args) {
@@ -51,24 +53,27 @@ public class ClientMainFX extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
+        stage.setFullScreen(true);
         startGameInitials(stage);
+        stage.show();
 //        testEndScreen(stage);
     }
 
     public static void startGameInitials(Stage stage) throws IOException {
+        GameContextCore.GAME_FINISHED = false;
         scene = new Scene(new Pane());
         scene.setRoot(ClientConnectUI.getInstance(stage, scene));
         stage.setTitle("Cards");
         stage.setScene(scene);
-        stage.setFullScreen(true);
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setFullScreenExitHint("");
-        stage.show();
+        stage.setFullScreen(true);
 
         scene.setOnKeyPressed(e -> {
             if (e.isControlDown() && e.getCode() == KeyCode.Q) {
                 try {
-                    GameContextCore.currentPlayer.getAssociatedClient().send(new Message(MessageType.PLAYER_LEFT, null));
+                    if ( !(scene.getRoot() instanceof ClientConnectUI))
+                        GameContextCore.currentPlayer.getAssociatedClient().send(new Message(MessageType.PLAYER_LEFT, null));
                     System.exit(0);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -82,6 +87,7 @@ public class ClientMainFX extends Application {
     }
 
     public static void restartGame(boolean isDisconnected) {
+        log.info("Restarting Game: Disconnected? {}, GAME_FINISHED? {}", isDisconnected, GameContextCore.GAME_FINISHED);
         if (isDisconnected) {
             showDisconnectNotification(() -> {
                 try {
@@ -563,6 +569,7 @@ public class ClientMainFX extends Application {
         if (GameContextCore.currentPlayer != null)
             GameContextCore.currentPlayer.clear();
         GameContextCore.currentPlayer = null;
+        GameContextCore.turn = 0;
         GameContextCore.deck = null;
         ClientConnectUI.clear();
         StartScreen.clear();

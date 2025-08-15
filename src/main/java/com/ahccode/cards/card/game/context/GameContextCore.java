@@ -42,4 +42,6 @@ public class GameContextCore {
     public static int PORT;
     public static String HOSTNAME;
 
+    public static boolean GAME_FINISHED = false;
+
 }

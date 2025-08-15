@@ -1,6 +1,7 @@
 package com.ahccode.cards.network;
 
 import com.ahccode.cards.network.message.Message;
+import com.ahccode.cards.network.message.MessageType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -67,7 +68,13 @@ public class ServerHandler implements Runnable {
 
                         case GAME_FINISHED:
                             log.info("Processing GAME_FINISHED for player {}", playerNumber);
+                            server.broadcast(new Message(MessageType.GAME_FINISHED, "Game Finished Normally"));
                             server.gameClosed();
+                            break;
+
+                        case PLAYER_LEFT:
+                            log.info("Processing PLAYER_LEFT for player {}", playerNumber);
+                            server.sendCloseMessage();
                             break;
 
 

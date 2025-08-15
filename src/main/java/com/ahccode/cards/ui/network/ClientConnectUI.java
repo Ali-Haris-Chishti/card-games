@@ -62,6 +62,7 @@ public class ClientConnectUI extends StackPane {
         ClientConnectUI.stage.getIcons().add(
                 new Image("file:///" + System.getProperty("user.dir") + "\\assets\\icons\\Game.png")
         );
+        stage.setFullScreen(true);
 
         // ===== Background =====
         setBackground(
@@ -89,19 +90,19 @@ public class ClientConnectUI extends StackPane {
         title.setStyle("-fx-font-size: 28px; -fx-text-fill: white; -fx-font-weight: bold;");
 
         // ===== Player Name Field =====
-        nameField = new TextField("name");
+        nameField = new TextField("");
         nameField.setPromptText("Your Name");
         nameField.setMaxWidth(Double.MAX_VALUE);
         nameField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Host Field =====
-        hostField = new TextField("localhost");
+        hostField = new TextField("");
         hostField.setPromptText("Server Host");
         hostField.setMaxWidth(Double.MAX_VALUE);
         hostField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Port Field =====
-        portField = new TextField("5000");
+        portField = new TextField("");
         portField.setPromptText("Server Port");
         portField.setMaxWidth(Double.MAX_VALUE);
         portField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
@@ -645,6 +646,10 @@ public class ClientConnectUI extends StackPane {
     public static ClientConnectUI getInstance(Stage stage, Scene scene) throws IOException {
         if (instance == null) {
             instance = new ClientConnectUI(stage, scene);
+            Platform.runLater(() -> {
+                scene.getRoot().requestFocus(); // clears focus from all text fields
+            });
+
         }
         return instance;
     }
