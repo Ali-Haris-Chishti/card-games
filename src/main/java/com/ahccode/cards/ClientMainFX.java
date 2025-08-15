@@ -88,10 +88,14 @@ public class ClientMainFX extends Application {
 
     public static void restartGame(boolean isDisconnected) {
         log.info("Restarting Game: Disconnected? {}, GAME_FINISHED? {}", isDisconnected, GameContextCore.GAME_FINISHED);
+        try {
+            clearAll();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (isDisconnected) {
             showDisconnectNotification(() -> {
                 try {
-                    clearAll();
                     startGameInitials(primaryStage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -100,7 +104,6 @@ public class ClientMainFX extends Application {
         } else {
             showPlayAgainTransition(() -> {
                 try {
-                    clearAll();
                     startGameInitials(primaryStage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -566,11 +569,11 @@ public class ClientMainFX extends Application {
     }
 
     public static void clearAll() throws IOException {
+        GameContextCore.turn = 0;
+        GameContextCore.deck = null;
         if (GameContextCore.currentPlayer != null)
             GameContextCore.currentPlayer.clear();
         GameContextCore.currentPlayer = null;
-        GameContextCore.turn = 0;
-        GameContextCore.deck = null;
         ClientConnectUI.clear();
         StartScreen.clear();
     }

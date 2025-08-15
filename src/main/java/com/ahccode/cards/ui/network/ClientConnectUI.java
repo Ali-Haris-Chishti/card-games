@@ -1,7 +1,6 @@
 package com.ahccode.cards.ui.network;
 
 import com.ahccode.cards.card.game.Player;
-import com.ahccode.cards.card.game.Team;
 import com.ahccode.cards.card.game.context.GameContextCore;
 import com.ahccode.cards.card.game.context.GameContextUI;
 import com.ahccode.cards.card.game.daketi.DaketiPlayer;
@@ -90,19 +89,19 @@ public class ClientConnectUI extends StackPane {
         title.setStyle("-fx-font-size: 28px; -fx-text-fill: white; -fx-font-weight: bold;");
 
         // ===== Player Name Field =====
-        nameField = new TextField("");
+        nameField = new TextField("ali");
         nameField.setPromptText("Your Name");
         nameField.setMaxWidth(Double.MAX_VALUE);
         nameField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Host Field =====
-        hostField = new TextField("");
+        hostField = new TextField("localhost");
         hostField.setPromptText("Server Host");
         hostField.setMaxWidth(Double.MAX_VALUE);
         hostField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Port Field =====
-        portField = new TextField("");
+        portField = new TextField("5000");
         portField.setPromptText("Server Port");
         portField.setMaxWidth(Double.MAX_VALUE);
         portField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");

@@ -18,7 +18,15 @@ public class ThullaController extends GameController {
 
     private int playerNumberOfHishestCard = 0;
 
-    public ThullaController() {
+    private static ThullaController instance;
+    public static ThullaController getInstance() {
+        if (instance == null) {
+            instance = new ThullaController();
+        }
+        return instance;
+    }
+
+    private ThullaController() {
 
     }
 
@@ -142,6 +150,13 @@ public class ThullaController extends GameController {
             playerNumberOfHishestCard = turn;
             previousHighestCard = card;
         }
+    }
+
+    public void clear() {
+        if (instance != null) {
+
+        }
+        instance = null;
     }
 
 }

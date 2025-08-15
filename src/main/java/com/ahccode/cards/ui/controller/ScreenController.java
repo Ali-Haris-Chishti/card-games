@@ -63,7 +63,7 @@ public abstract class ScreenController {
     protected GameController assignControllerBasedOnGameType() {
         return switch (GameContextCore.getGameType()) {
             case DAKETI -> DaketiController.getInstance();
-            case THULLA -> new ThullaController();
+            case THULLA -> ThullaController.getInstance();
         };
     }
 
@@ -192,6 +192,22 @@ public abstract class ScreenController {
             cardBox = ((ThullaScreen) gameScreen).getCardInHandBoxFromIndex(index);
         }
         return cardBox;
+    }
+
+    public void animateStacks(int scoreToIncrease, int scoreToDecrease) {
+        log.info("Animating: [{}, {}]", scoreToIncrease, scoreToDecrease);
+        int playerBoxIndex = GameContextCore.currentPlayer.getPlayerNumber() % 2 == 0 ? 0 : 1;
+        int opponentBoxIndex = GameContextCore.currentPlayer.getPlayerNumber() % 2 == 0 ? 1 : 0;
+        CardInStackBox playerBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(playerBoxIndex);
+        CardInStackBox opponentBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(opponentBoxIndex);
+
+        if (scoreToIncrease != 0) {
+            playerBox.playScoreAnimation(scoreToIncrease);
+        }
+        if (scoreToDecrease != 0) {
+            opponentBox.playScoreAnimation(-1 * scoreToDecrease);
+        }
+
     }
 
     protected CardInHandBox getHandBoxFromIndex(int index) {

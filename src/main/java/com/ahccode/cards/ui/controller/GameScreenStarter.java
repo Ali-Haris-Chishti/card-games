@@ -119,9 +119,9 @@ public class GameScreenStarter {
                 Platform.runLater(() -> {
                     PlayerWaitingScreen.getInstance().cleanup();
                     currentGame = initializeGameScreen(playerInfoList, cardMessages);
-                    scene.setRoot(currentGameScreen);
                     currentGameScreen.initialize(currentGame, playerInfoList);
                     screenController.startGame();
+                    scene.setRoot(currentGameScreen);
                 });
             }
         }, 3000);

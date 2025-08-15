@@ -69,7 +69,7 @@ public class StartScreen extends Pane {
                 Platform.runLater( () -> {
                     gameScreenStarter = new GameScreenStarter(scene);
                     scene.setRoot(gameScreenStarter.getScreenController().getGameScreen());
-//                    stage.setFullScreen(true);
+                    stage.setFullScreen(true);
                     stage.show();
                     GameServer.getInstance().setGameScreenStarter(gameScreenStarter);
                 });

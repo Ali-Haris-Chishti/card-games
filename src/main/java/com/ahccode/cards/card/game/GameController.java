@@ -2,7 +2,9 @@ package com.ahccode.cards.card.game;
 
 import com.ahccode.cards.card.Card;
 import com.ahccode.cards.card.game.context.GameContextCore;
+import com.ahccode.cards.card.game.daketi.DaketiController;
 import com.ahccode.cards.ui.controller.ScreenController;
+import com.ahccode.cards.ui.daketi.DaketiScreen;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import lombok.Getter;
@@ -29,12 +31,20 @@ public abstract class GameController {
     }
 
     public void updateTurn() {
-        log.info("Updating Turn");
-        log.info("From : {}", turn);
+        int prevTurn = turn;
         turn = (turn + 1) % 4;
         GameContextCore.turn = turn;
-        log.info("To   : {}", turn);
-        Platform.runLater(() -> screenController.changeColorForTurn(turn));
+        log.info("Updating Turn: {} to {}", prevTurn, turn);
+        Platform.runLater(() -> {
+            log.info("Animating turn transition");
+            if (screenController.getGameScreen() instanceof DaketiScreen) {
+                log.info("Animating turn transition for daketti screen");
+                ((DaketiScreen) screenController.getGameScreen()).animateTurnTransition(prevTurn, turn);
+            }
+            screenController.changeColorForTurn(turn);
+        });
     }
+
+    public abstract void clear();
 
 }

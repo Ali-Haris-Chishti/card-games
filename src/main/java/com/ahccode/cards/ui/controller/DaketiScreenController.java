@@ -87,7 +87,7 @@ public class DaketiScreenController extends ScreenController {
 
     public void clear() {
         if (instance != null) {
-
+            gameController.clear();
         }
         instance = null;
     }

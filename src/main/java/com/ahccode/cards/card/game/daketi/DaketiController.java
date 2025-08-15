@@ -12,6 +12,7 @@ import com.ahccode.cards.network.message.MessageType;
 import com.ahccode.cards.network.message.MoveMessage;
 import com.ahccode.cards.ui.controller.DaketiScreenController;
 import com.ahccode.cards.ui.controller.ScreenController;
+import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -89,6 +90,7 @@ public class DaketiController extends GameController {
         }
         daketi.daketiPlayers[turn].cardsInHand.remove(card);
         if (!checkCardMove(card)) {
+
             log.info("No Match found! Turn updated to player {}", playerNumber);
             daketi.cardsInCenter.add(card);
 
@@ -109,6 +111,13 @@ public class DaketiController extends GameController {
             updateTurn();
         }
 
+        Timer timer = new Timer(true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> screenController.animateStacks(scoreToIncrease + scoreToDecrease, scoreToDecrease));
+            }
+        }, 300);
         screenController.changeColorForTurn(turn);
         return check;
     }
@@ -118,11 +127,14 @@ public class DaketiController extends GameController {
         return cardSelected(card, playerNumber, true);
     }
 
+    private int scoreToIncrease = 0, scoreToDecrease = 0;
 
     private boolean checkCardMove(Card card) {
         CardNumber number = card.getCardNumber();
         boolean teamATurn = (turn % 2) == 0;
         boolean match = false;
+
+        scoreToIncrease = 0;
 
         match = checkMoveFromStacks(card);
 
@@ -130,6 +142,7 @@ public class DaketiController extends GameController {
         while (iterator.hasNext()) {
             Card c = (Card) iterator.next();
             if (c.getCardNumber().equals(number)) {
+                scoreToIncrease += c.getCardNumber().getDakettiScore();
                 if (teamATurn) {
                     daketi.cardStackA.add(c);
                     screenController.applyMoveCardFromCenterToStackAnimation(c, 0);
@@ -146,6 +159,7 @@ public class DaketiController extends GameController {
         }
 
         if (match) {
+            scoreToIncrease += card.getCardNumber().getDakettiScore();
             if (teamATurn) {
                 daketi.cardStackA.add(card);
                 screenController.applyMoveCardFromHandToStackAnimation(card, turn, 0);
@@ -166,6 +180,7 @@ public class DaketiController extends GameController {
 
         boolean match = false;
         boolean matchFromOppositeStack = true;
+        scoreToDecrease = 0;
 
         if (teamATurn) {
             if (!daketi.cardStackA.isEmpty() && daketi.cardStackA.peek().getCardNumber().equals(card.getCardNumber())) {
@@ -188,6 +203,7 @@ public class DaketiController extends GameController {
                     card.showCard(true);
 //                    GameContextCore.currentPlayer.moveCard(new MoveMessage(card.getCardFamily(), card.getCardNumber(), 1, 0, 5, false));
                     match = matchFromOppositeStack = true;
+                    scoreToDecrease += card.getCardNumber().getDakettiScore();
                 }
             }
             else {
@@ -198,6 +214,7 @@ public class DaketiController extends GameController {
                     card.showCard(true);
 //                    GameContextCore.currentPlayer.moveCard(new MoveMessage(card.getCardFamily(), card.getCardNumber(), 0, 1, 5, false));
                     match = matchFromOppositeStack = true;
+                    scoreToDecrease += card.getCardNumber().getDakettiScore();
                 }
             }
         }
@@ -235,6 +252,14 @@ public class DaketiController extends GameController {
         if (currentMessage.updateTurn) {
             instance.updateTurn();
         }
+    }
+
+    public void clear() {
+        if (instance != null) {
+            if (cardPickTimer != null)
+                cardPickTimer.cancel();
+        }
+        instance = null;
     }
 
 }

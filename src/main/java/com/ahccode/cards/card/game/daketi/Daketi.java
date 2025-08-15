@@ -146,7 +146,10 @@ public class Daketi extends Game {
         for (int i = 0; i < 52; i++) {
             indices.add(i);
         }
-        Collections.shuffle(indices);
+
+        for (int i = 0; i < 10; i++)
+            Collections.shuffle(indices);
+
 
 
         int pointer = 0;
