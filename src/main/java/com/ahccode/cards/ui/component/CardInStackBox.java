@@ -22,10 +22,10 @@ public class CardInStackBox extends CardBox {
 
     public CardInStackBox(List<Card> cards, Team team, int playerNumber, int overlap) {
         super(cards, team, playerNumber, overlap);
-        initializeStackBox();
+        initializeStackBox(true);
     }
 
-    private void initializeStackBox() {
+    private void initializeStackBox(boolean end) {
         // Set size based on card overlap and count
         double totalWidth = CARD_WIDTH + (cards.size() - 1) * CARD_OVERLAP;
         double containerPadding = 20;
@@ -52,6 +52,11 @@ public class CardInStackBox extends CardBox {
             card.setLayoutX(layoutX);
             card.setLayoutY(containerPadding);
 
+            if (end) {
+                card.setLayoutY(getPadding().getTop());
+                card.setScaleX(1.0);
+                card.setScaleY(1.0);
+            }
 
             // Subtle shadow by default
             DropShadow shadow = new DropShadow(8, Color.gray(0.4));
@@ -59,6 +64,10 @@ public class CardInStackBox extends CardBox {
 
             getChildren().add(card);
         }
+    }
+
+    private void initializeStackBox() {
+        initializeStackBox(false);
     }
 
     private void repaint() {
@@ -132,6 +141,5 @@ public class CardInStackBox extends CardBox {
         getChildren().remove(card);
         repaint();
     }
-
 
 }

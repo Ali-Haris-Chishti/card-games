@@ -11,6 +11,11 @@ public class NameScreenController extends ScreenController{
         super(game, gameScreen);
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     public static NameScreenController getInstance(Game game, Pane gameScreen) {
         if (instance == null) {
             instance = new NameScreenController(game, gameScreen);

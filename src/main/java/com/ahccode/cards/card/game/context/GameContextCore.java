@@ -7,6 +7,7 @@ import com.ahccode.cards.card.game.GameType;
 import com.ahccode.cards.card.game.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,15 +21,12 @@ public class GameContextCore {
     }
 
 
-    public static GameType getGameType() {
-        return gameType;
-    }
-
     public static void setGameType(GameType gameType) {
         GameContextCore.gameType = gameType;
     }
 
-    private static GameType gameType;
+    @Getter
+    private static GameType gameType = GameType.DAKETI;
 
 
     public static void printDeck() {
@@ -38,6 +36,10 @@ public class GameContextCore {
     }
 
     public static Player currentPlayer;
-    public static int currentPlayerNumber;
+
+    public static int turn = 0;
+
+    public static int PORT;
+    public static String HOSTNAME;
 
 }

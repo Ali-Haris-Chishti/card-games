@@ -1,7 +1,7 @@
 package com.ahccode.cards.ui.controller;
 
 
-import com.ahccode.cards.MainFX;
+import com.ahccode.cards.ClientMainFX;
 import com.ahccode.cards.card.Card;
 import com.ahccode.cards.card.game.Game;
 import com.ahccode.cards.card.game.context.GameContextCore;
@@ -19,12 +19,15 @@ import com.ahccode.cards.ui.thulla.ThullaScreen;
 import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
 public abstract class ScreenController {
+
+
 
     protected ScreenController(Game game, Pane gameScreen) {
         this.game = game;
@@ -52,8 +55,9 @@ public abstract class ScreenController {
 
     protected Game game;
 
-    protected Stage stage = MainFX.getPrimaryStage();
+    protected Stage stage = ClientMainFX.getPrimaryStage();
 
+    @Getter
     protected GameController gameController;
 
     protected GameController assignControllerBasedOnGameType() {
@@ -103,7 +107,6 @@ public abstract class ScreenController {
         Platform.runLater( () -> {
             sourceBox.removeCard(card);
             targetBox.addCard(card);
-            sourceBox.changeColorForTurn();
         });
         return 2;
     }
@@ -152,7 +155,6 @@ public abstract class ScreenController {
         Platform.runLater(() -> {
             sourceBox.removeCard(card);
             targetBox.addCard(card);
-            targetBox.changeColorForTurn();
         });
         return 6;
     }
@@ -202,5 +204,7 @@ public abstract class ScreenController {
 
     public void changeColorForTurn(int turn) {
     }
+
+    public abstract void clear();
 
 }

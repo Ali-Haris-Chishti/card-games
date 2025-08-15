@@ -28,71 +28,77 @@ public class ServerHandler implements Runnable {
             Thread.sleep(100);
 
             in = new ObjectInputStream(socket.getInputStream());
-            System.out.println("ServerHandler started for client " + playerNumber + ": " + socket.getInetAddress());
+            log.info("ServerHandler started for client {}: {}", playerNumber, socket.getInetAddress());
 
             while (true) {
                 try {
-                    System.out.println("Waiting for message from player " + playerNumber + ": " + socket.getInetAddress());
+                    log.info("Waiting for message from player {}: {}", playerNumber, socket.getInetAddress());
 
                     Object obj = in.readObject();
                     if (!(obj instanceof Message)) {
-                        System.err.println("Received non-Message object from player " + playerNumber + ": " + obj.getClass());
+                        log.error("Received non-Message object from player {}: {}", playerNumber, obj.getClass());
                         continue;
                     }
 
                     Message message = (Message) obj;
-                    System.out.println("Received message: " + message.getType() + " from player " + playerNumber);
+                    log.info("Received message: {} from player {}", message.getType(), playerNumber);
 
                     switch (message.getType()) {
                         case GET_PLAYER_NO:
-                            System.out.println("Processing GET_PLAYER_NO for player " + playerNumber);
+                            log.info("Processing GET_PLAYER_NO for player {}", playerNumber);
                             server.getPlayerNumber(out, playerNumber);
                             break;
 
                         case HELLO:
-                            System.out.println("Processing HELLO for player " + playerNumber);
+                            log.info("Processing HELLO for player {}", playerNumber);
                             server.sendHelloMessage(message, playerNumber);
                             break;
 
                         case GET_START_CARDS:
-                            System.out.println("Processing GET_START_CARDS for player " + playerNumber);
+                            log.info("Processing GET_START_CARDS for player {}", playerNumber);
                             server.sendPlayerCards(out, playerNumber);
-                            System.out.println("Completed GET_START_CARDS for player " + playerNumber);
+                            log.info("Completed GET_START_CARDS for player {}", playerNumber);
                             break;
 
                         case MOVE_CARD:
-                            System.out.println("Processing MOVE_CARD from player " + playerNumber);
+                            log.info("Processing MOVE_CARD from player {}", playerNumber);
                             server.moveCard(message, playerNumber); // Pass player number to exclude sender
                             break;
 
+                        case GAME_FINISHED:
+                            log.info("Processing GAME_FINISHED for player {}", playerNumber);
+                            server.gameClosed();
+                            break;
+
+
                         default:
-                            System.out.println("Unknown message type: " + message.getType() + " from player " + playerNumber);
+                            log.info("Unknown message type: {} from player {}", message.getType(), playerNumber);
                             break;
                     }
 
                 } catch (ClassNotFoundException e) {
-                    System.err.println("ClassNotFoundException from player " + playerNumber + ": " + e.getMessage());
+                    log.error("ClassNotFoundException from player {}: {}", playerNumber, e.getMessage());
                     e.printStackTrace();
                     break;
                 } catch (IOException e) {
                     if (e.getMessage().contains("Connection reset") || e.getMessage().contains("Socket closed")) {
-                        System.out.println("Client " + playerNumber + " disconnected normally");
+                        log.info("Client {} disconnected normally", playerNumber);
                     } else {
-                        System.err.println("IO Error with player " + playerNumber + ": " + e.getMessage());
+                        log.error("IO Error with player {}: {}", playerNumber, e.getMessage());
                         e.printStackTrace();
                     }
                     break;
                 } catch (Exception e) {
-                    System.err.println("Unexpected error with player " + playerNumber + ": " + e.getMessage());
+                    log.error("Unexpected error with player {}: {}", playerNumber, e.getMessage());
                     e.printStackTrace();
                     break;
                 }
             }
         } catch (InterruptedException e) {
-            System.err.println("ServerHandler interrupted for player " + playerNumber);
+            log.error("ServerHandler interrupted for player {}", playerNumber);
             Thread.currentThread().interrupt();
         } catch (IOException e) {
-            System.err.println("Error creating ObjectInputStream for player " + playerNumber + ": " + e.getMessage());
+            log.error("Error creating ObjectInputStream for player {}: {}", playerNumber, e.getMessage());
         } finally {
             // Clean up when client disconnects
             cleanup();
@@ -100,7 +106,7 @@ public class ServerHandler implements Runnable {
     }
 
     private void cleanup() {
-        System.out.println("Cleaning up resources for player " + playerNumber);
+        log.info("Cleaning up resources for player {}", playerNumber);
 
         server.removeClient(playerNumber);
 
@@ -109,7 +115,7 @@ public class ServerHandler implements Runnable {
                 out.close();
             }
         } catch (IOException e) {
-            System.err.println("Error closing output stream for player " + playerNumber + ": " + e.getMessage());
+            log.error("Error closing output stream for player {}: {}", playerNumber, e.getMessage());
         }
 
         try {
@@ -117,9 +123,9 @@ public class ServerHandler implements Runnable {
                 socket.close();
             }
         } catch (IOException e) {
-            System.err.println("Error closing socket for player " + playerNumber + ": " + e.getMessage());
+            log.error("Error closing socket for player {}: {}", playerNumber, e.getMessage());
         }
 
-        System.out.println("Cleanup completed for player " + playerNumber);
+        log.info("Cleanup completed for player {}", playerNumber);
     }
 }

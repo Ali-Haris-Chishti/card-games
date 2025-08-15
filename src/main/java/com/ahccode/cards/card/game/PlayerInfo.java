@@ -1,7 +1,10 @@
 package com.ahccode.cards.card.game;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
+@ToString
 public class PlayerInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     private final int playerNumber;

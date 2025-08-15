@@ -1,7 +1,7 @@
 package com.ahccode.cards;
 
-public class Main {
+public class ClientMain {
     public static void main(String[] args) {
-        MainFX.main(args);
+        ClientMainFX.main(args);
     }
 }

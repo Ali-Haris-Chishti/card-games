@@ -1,5 +1,6 @@
 package com.ahccode.cards.network;
 
+import com.ahccode.cards.ClientMainFX;
 import com.ahccode.cards.card.game.PlayerInfo;
 import com.ahccode.cards.card.game.daketi.DaketiController;
 import com.ahccode.cards.network.message.CardMessage;
@@ -102,6 +103,10 @@ public class GameClient {
                                 }
                                 break;
 
+                            case SERVER_SHUTDOWN:
+                                log.info("Received SERVER_SHUTDOWN for player {}", myPlayerNumber);
+                                Platform.runLater(() -> ClientMainFX.restartGame(true));
+
                             default:
                                 log.info("Unknown message type: {}", msg.getType());
                                 break;
@@ -114,7 +119,13 @@ public class GameClient {
                     } catch (IOException e) {
                         if (connected) {
                             System.err.println("IO Error reading from server: " + e.getMessage());
+                            e.printStackTrace();
                         }
+                        Platform.runLater(() -> ClientMainFX.restartGame(true));
+                        break;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> ClientMainFX.restartGame(true));
                         break;
                     }
                 }
@@ -171,5 +182,10 @@ public class GameClient {
         } catch (IOException e) {
             System.err.println("Error closing streams: " + e.getMessage());
         }
+    }
+
+    public void close() throws IOException {
+        out.close();
+        in.close();
     }
 }

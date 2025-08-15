@@ -26,7 +26,7 @@ public class Card extends ImageView implements Serializable {
 
     private CardNumber cardNumber;
 
-    private final String BASE_PATH = "file:///" + System.getProperty("user.dir") + "\\cards";
+    private final String BASE_PATH = "file:///" + System.getProperty("user.dir") + "\\assets\\cards";
 
     public Card(CardFamily cardFamily, CardNumber cardNumber, boolean show, boolean initImage) {
 
@@ -41,6 +41,7 @@ public class Card extends ImageView implements Serializable {
             else
                 path = BASE_PATH + "\\" + "BACK.png";
             setImage(new Image(path));
+//            setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(cardNumber + " of " + cardFamily + ".jpg"))));
         }
 
 //        String imageName = cardNumber + " of " + cardFamily + ".png";
@@ -80,9 +81,7 @@ public class Card extends ImageView implements Serializable {
             path = BASE_PATH + "\\" + cardNumber + " of " + cardFamily + ".png";
         else
             path = BASE_PATH + "\\" + "BACK.png";
-        setImage(new Image(
-                path
-        ));
+        setImage(new Image(path));
 
     }
 

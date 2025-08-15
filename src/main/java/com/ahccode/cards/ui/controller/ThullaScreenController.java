@@ -24,6 +24,11 @@ public class ThullaScreenController extends ScreenController{
         super(game, gameScreen);
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     public void removeCardsFromCenter(List<Card> cards) {
         CardInHandBox sourceBox = getHandBoxFromIndex(4);
 
@@ -34,9 +39,5 @@ public class ThullaScreenController extends ScreenController{
         });
     }
 
-    public void changeColorForTurn(int turn) {
-        CardInHandBox sourceBox = getHandBoxFromIndex(turn);
-        Platform.runLater(sourceBox::changeColorForTurn);
-    }
 
 }

@@ -37,7 +37,7 @@ public class Player {
     public void sendHelloToServer() {
         try {
             // Start the client connection (this will automatically get player number)
-            associatedClient.start();
+//            associatedClient.start();
 
             // Wait for player number to be received
             waitForPlayerNumber();
@@ -92,4 +92,11 @@ public class Player {
             throw new RuntimeException(e);
         }
     }
+
+    public void clear() throws IOException {
+        if (associatedClient != null) {
+            associatedClient.close();
+        }
+    }
+
 }

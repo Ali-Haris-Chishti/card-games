@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,14 +27,11 @@ import java.util.TimerTask;
 public class GameScreenStarter {
 
 
-    public ScreenController getScreenController() {
-        return screenController;
-    }
-
     public void setScreenController(ScreenController screenController) {
         this.screenController = screenController;
     }
 
+    @Getter
     private ScreenController screenController;
 
     private Game currentGame;
@@ -42,7 +40,6 @@ public class GameScreenStarter {
     private Scene scene;
 
     public GameScreenStarter(Scene scene) {
-        GameContextCore.currentPlayerNumber = GameContextCore.currentPlayer.getPlayerNumber();
         this.scene = scene;
         waitForPlayers();
     }
@@ -123,11 +120,15 @@ public class GameScreenStarter {
                     PlayerWaitingScreen.getInstance().cleanup();
                     currentGame = initializeGameScreen(playerInfoList, cardMessages);
                     scene.setRoot(currentGameScreen);
-                    currentGameScreen.initialize(currentGame);
+                    currentGameScreen.initialize(currentGame, playerInfoList);
                     screenController.startGame();
                 });
             }
         }, 3000);
     }
 
+    public void clear() {
+        screenController.clear();
+        currentGame = null;
+    }
 }

@@ -7,5 +7,8 @@ public enum MessageType {
     START_GAME,
     GET_PLAYER_NO,
     GET_START_CARDS,
-    MOVE_CARD
+    MOVE_CARD,
+    GAME_FINISHED,
+    SERVER_SHUTDOWN,
+    PLAYER_LEFT
 }

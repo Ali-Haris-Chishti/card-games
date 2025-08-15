@@ -1,6 +1,7 @@
 package com.ahccode.cards.ui.thulla;
 
 import com.ahccode.cards.card.game.Game;
+import com.ahccode.cards.card.game.PlayerInfo;
 import com.ahccode.cards.card.game.Team;
 import com.ahccode.cards.card.game.thulla.Thulla;
 import com.ahccode.cards.ui.GameScreen;
@@ -27,16 +28,16 @@ public class ThullaScreen extends GameScreen {
     }
 
     @Override
-    public void initialize(Game game) {
+    public void initialize(Game game, List<PlayerInfo> playerInfoList) {
         this.thulla = (Thulla) game;
         setPadding(new Insets(PADDING));
 
         for (int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-            handCardBoxes.add(new CardInHandBox(thulla.getCardsOfPlayerNumber(i), Team.NONE, i));
+            handCardBoxes.add(new CardInHandBox(thulla.getCardsOfPlayerNumber(i), Team.NONE, i, playerInfoList.get(i).getName()));
             getChildren().add(handCardBoxes.get(i));
         }
 
-        handCardBoxes.add(new CardInHandBox(new ArrayList<>(), Team.NONE, -1));
+        handCardBoxes.add(new CardInHandBox(new ArrayList<>(), Team.NONE, -1, null));
         getChildren().add(handCardBoxes.get(4));
 
         layoutBoundsProperty().addListener((obs, oldVal, newVal) -> layoutChildren());

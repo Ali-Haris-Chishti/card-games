@@ -85,4 +85,12 @@ public class StartScreen extends Pane {
         return gameScreenStarter;
     }
 
+    public static void clear() {
+        if (instance != null) {
+            instance.gameScreenStarter.clear();
+            instance.gameScreenStarter = null;
+        }
+        instance = null;
+    }
+
 }
