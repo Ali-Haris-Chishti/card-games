@@ -89,19 +89,19 @@ public class ClientConnectUI extends StackPane {
         title.setStyle("-fx-font-size: 28px; -fx-text-fill: white; -fx-font-weight: bold;");
 
         // ===== Player Name Field =====
-        nameField = new TextField("ali");
+        nameField = new TextField("");
         nameField.setPromptText("Your Name");
         nameField.setMaxWidth(Double.MAX_VALUE);
         nameField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Host Field =====
-        hostField = new TextField("localhost");
+        hostField = new TextField("");
         hostField.setPromptText("Server Host");
         hostField.setMaxWidth(Double.MAX_VALUE);
         hostField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");
 
         // ===== Port Field =====
-        portField = new TextField("5000");
+        portField = new TextField("");
         portField.setPromptText("Server Port");
         portField.setMaxWidth(Double.MAX_VALUE);
         portField.setStyle("-fx-background-radius: 8; -fx-padding: 10; -fx-font-size: 14px;");

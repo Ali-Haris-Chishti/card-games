@@ -196,8 +196,8 @@ public abstract class ScreenController {
 
     public void animateStacks(int scoreToIncrease, int scoreToDecrease) {
         log.info("Animating: [{}, {}]", scoreToIncrease, scoreToDecrease);
-        int playerBoxIndex = GameContextCore.currentPlayer.getPlayerNumber() % 2 == 0 ? 0 : 1;
-        int opponentBoxIndex = GameContextCore.currentPlayer.getPlayerNumber() % 2 == 0 ? 1 : 0;
+        int playerBoxIndex = GameContextCore.turn % 2 == 0 ? 0 : 1;
+        int opponentBoxIndex = GameContextCore.turn % 2 == 0 ? 1 : 0;
         CardInStackBox playerBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(playerBoxIndex);
         CardInStackBox opponentBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(opponentBoxIndex);
 
