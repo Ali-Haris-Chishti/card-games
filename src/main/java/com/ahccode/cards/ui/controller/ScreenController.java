@@ -194,10 +194,10 @@ public abstract class ScreenController {
         return cardBox;
     }
 
-    public void animateStacks(int scoreToIncrease, int scoreToDecrease) {
+    public void animateStacks(int scoreToIncrease, int scoreToDecrease, int turn) {
         log.info("Animating: [{}, {}]", scoreToIncrease, scoreToDecrease);
-        int playerBoxIndex = GameContextCore.turn % 2 == 0 ? 0 : 1;
-        int opponentBoxIndex = GameContextCore.turn % 2 == 0 ? 1 : 0;
+        int playerBoxIndex = turn % 2 == 0 ? 0 : 1;
+        int opponentBoxIndex = turn % 2 == 0 ? 1 : 0;
         CardInStackBox playerBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(playerBoxIndex);
         CardInStackBox opponentBox = ((DaketiScreen) gameScreen).getStackCardBoxFromIndex(opponentBoxIndex);
 

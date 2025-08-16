@@ -5,6 +5,7 @@ import com.ahccode.cards.card.CardFamily;
 import com.ahccode.cards.card.CardNumber;
 import com.ahccode.cards.card.game.GameType;
 import com.ahccode.cards.card.game.Player;
+import com.ahccode.cards.network.GameInfo;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import lombok.Getter;
@@ -39,9 +40,10 @@ public class GameContextCore {
 
     public static int turn = 0;
 
-    public static int PORT;
-    public static String HOSTNAME;
 
     public static boolean GAME_FINISHED = false;
+
+    // default for testing purposes
+    public static GameInfo gameInfo = new GameInfo("haris", "localhost", 5000);
 
 }

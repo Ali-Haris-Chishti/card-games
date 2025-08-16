@@ -54,15 +54,15 @@ public class ClientMainFX extends Application {
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
         stage.setFullScreen(true);
-        startGameInitials(stage);
+        startGameInitials(stage, false);
         stage.show();
 //        testEndScreen(stage);
     }
 
-    public static void startGameInitials(Stage stage) throws IOException {
+    public static void startGameInitials(Stage stage, boolean direct) throws IOException {
         GameContextCore.GAME_FINISHED = false;
         scene = new Scene(new Pane());
-        scene.setRoot(ClientConnectUI.getInstance(stage, scene));
+        scene.setRoot(ClientConnectUI.getInstance(stage, scene, direct));
         stage.setTitle("Cards");
         stage.setScene(scene);
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
@@ -96,7 +96,7 @@ public class ClientMainFX extends Application {
         if (isDisconnected) {
             showDisconnectNotification(() -> {
                 try {
-                    startGameInitials(primaryStage);
+                    startGameInitials(primaryStage, false);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -104,7 +104,7 @@ public class ClientMainFX extends Application {
         } else {
             showPlayAgainTransition(() -> {
                 try {
-                    startGameInitials(primaryStage);
+                    startGameInitials(primaryStage, true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

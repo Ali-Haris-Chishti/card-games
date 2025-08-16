@@ -5,6 +5,7 @@ import com.ahccode.cards.card.game.context.GameContextCore;
 import com.ahccode.cards.card.game.context.GameContextUI;
 import com.ahccode.cards.card.game.daketi.DaketiPlayer;
 import com.ahccode.cards.network.GameClient;
+import com.ahccode.cards.network.GameInfo;
 import com.ahccode.cards.ui.StartScreen;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -229,9 +230,9 @@ public class ClientConnectUI extends StackPane {
                         log.info("Successfully connected to server. Creating Player for Client");
 
                         Player player = new DaketiPlayer(0, name, client);
+
                         GameContextCore.currentPlayer = player;
-                        GameContextCore.PORT = port;
-                        GameContextCore.HOSTNAME = host;
+                        GameContextCore.gameInfo = new GameInfo(name, host, port);
 
                         // Unbind before setting custom message
                         statusLabel.textProperty().unbind();
@@ -449,10 +450,6 @@ public class ClientConnectUI extends StackPane {
         });
     }
 
-    public void connectToServer(String name) {
-        connectToServer(GameContextCore.HOSTNAME, GameContextCore.PORT, name);
-    }
-
     private void showErrorAlert(String title, String message, boolean isRetryable) {
         if (isRetryable) {
             showOverlay(title, message, true, () -> {
@@ -642,11 +639,17 @@ public class ClientConnectUI extends StackPane {
         });
     }
 
-    public static ClientConnectUI getInstance(Stage stage, Scene scene) throws IOException {
+    public static ClientConnectUI getInstance(Stage stage, Scene scene, boolean direct) throws IOException {
         if (instance == null) {
             instance = new ClientConnectUI(stage, scene);
             Platform.runLater(() -> {
                 scene.getRoot().requestFocus(); // clears focus from all text fields
+                if (direct) {
+                    instance.nameField.setText(GameContextCore.gameInfo.getName());
+                    instance.hostField.setText(GameContextCore.gameInfo.getHost());
+                    instance.portField.setText(String.valueOf(GameContextCore.gameInfo.getPort()));
+                    instance.connectButton.fire();
+                }
             });
 
         }

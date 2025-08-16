@@ -162,7 +162,6 @@ public class CardInHandBox extends CardBox {
             DropShadow shadow = new DropShadow(8, Color.gray(0.4));
             card.setEffect(shadow);
 
-            log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Color Restored");
         }
 
         // Ensure name label stays on top (only if it exists)
@@ -301,7 +300,6 @@ public class CardInHandBox extends CardBox {
     }
 
     public void changeColorForTurn(boolean turn) {
-        log.info("----------------------------------------------------Changing Color");
         if (turn) {
             playerNameLabel.setBorder(new Border(
                     new BorderStroke(
