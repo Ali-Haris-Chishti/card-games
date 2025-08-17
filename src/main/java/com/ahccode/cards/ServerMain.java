@@ -1,11 +1,9 @@
 package com.ahccode.cards;
 
-import com.ahccode.cards.ui.network.GameServerManagerUI;
+import com.ahccode.cards.ui.network.GameServerManagerCLI;
 
 public class ServerMain {
-
     public static void main(String[] args) {
-        GameServerManagerUI.main(args);
+        GameServerManagerCLI.main(new String[]{"5000"});
     }
-
 }
